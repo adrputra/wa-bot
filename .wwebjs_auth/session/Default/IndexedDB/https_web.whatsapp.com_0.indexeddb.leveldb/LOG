@@ -1,10 +1,13 @@
-2022/08/31-22:31:25.508 37f4 Reusing MANIFEST D:\ADR\Personal\ADR\Self-Project\wa-bot\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2022/08/31-22:31:25.509 37f4 Recovering log #4
-2022/08/31-22:31:25.963 37f4 Reusing old log D:\ADR\Personal\ADR\Self-Project\wa-bot\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000004.log 
-2022/08/31-22:31:38.446 350c Level-0 table #8: started
-2022/08/31-22:31:38.532 350c Level-0 table #8: 1148425 bytes OK
-2022/08/31-22:31:38.571 350c Delete type=0 #4
-2022/08/31-22:31:39.150 350c Compacting 1@1 + 1@2 files
-2022/08/31-22:31:39.393 350c Generated table #9@1: 21259 keys, 944302 bytes
-2022/08/31-22:31:39.393 350c Compacted 1@1 + 1@2 files => 944302 bytes
-2022/08/31-22:31:39.446 350c compacted to: files[ 0 0 1 0 0 0 0 ]
+2022/08/31-23:29:33.705 31cc Reusing MANIFEST D:\ADR\Personal\ADR\Self-Project\wa-bot\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2022/08/31-23:29:33.706 31cc Recovering log #3
+2022/08/31-23:29:33.893 31cc Reusing old log D:\ADR\Personal\ADR\Self-Project\wa-bot\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000003.log 
+2022/08/31-23:30:39.978 37f4 Level-0 table #5: started
+2022/08/31-23:30:40.568 37f4 Level-0 table #5: 1223570 bytes OK
+2022/08/31-23:30:41.558 37f4 Delete type=0 #3
+2022/08/31-23:32:12.877 238c Level-0 table #7: started
+2022/08/31-23:32:13.599 238c Level-0 table #7: 1105325 bytes OK
+2022/08/31-23:32:14.784 238c Delete type=0 #4
+2022/08/31-23:32:16.099 238c Compacting 1@1 + 1@2 files
+2022/08/31-23:32:16.800 238c Generated table #8@1: 19786 keys, 999395 bytes
+2022/08/31-23:32:16.800 238c Compacted 1@1 + 1@2 files => 999395 bytes
+2022/08/31-23:32:17.519 238c compacted to: files[ 0 0 1 0 0 0 0 ]

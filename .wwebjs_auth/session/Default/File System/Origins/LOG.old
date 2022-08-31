@@ -1,2 +1,3 @@
-2022/08/31-22:28:14.187 c0c Creating DB D:\ADR\Personal\ADR\Self-Project\wa-bot\.wwebjs_auth\session\Default\File System\Origins since it was missing.
-2022/08/31-22:28:14.547 c0c Reusing MANIFEST D:\ADR\Personal\ADR\Self-Project\wa-bot\.wwebjs_auth\session\Default\File System\Origins/MANIFEST-000001
+2022/08/31-23:27:53.406 20a4 Reusing MANIFEST D:\ADR\Personal\ADR\Self-Project\wa-bot\.wwebjs_auth\session\Default\File System\Origins/MANIFEST-000001
+2022/08/31-23:27:53.407 20a4 Recovering log #3
+2022/08/31-23:27:53.407 20a4 Reusing old log D:\ADR\Personal\ADR\Self-Project\wa-bot\.wwebjs_auth\session\Default\File System\Origins/000003.log 

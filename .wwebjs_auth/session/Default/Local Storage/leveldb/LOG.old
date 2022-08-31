@@ -1,2 +1,3 @@
-2022/08/31-22:28:11.097 376c Creating DB D:\ADR\Personal\ADR\Self-Project\wa-bot\.wwebjs_auth\session\Default\Local Storage\leveldb since it was missing.
-2022/08/31-22:28:11.270 376c Reusing MANIFEST D:\ADR\Personal\ADR\Self-Project\wa-bot\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
+2022/08/31-23:27:51.287 30e0 Reusing MANIFEST D:\ADR\Personal\ADR\Self-Project\wa-bot\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
+2022/08/31-23:27:51.288 30e0 Recovering log #3
+2022/08/31-23:27:51.288 30e0 Reusing old log D:\ADR\Personal\ADR\Self-Project\wa-bot\.wwebjs_auth\session\Default\Local Storage\leveldb/000003.log 
