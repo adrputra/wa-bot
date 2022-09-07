@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
         '--disable-gpu'
       ],
     },
-    authStrategy: new LocalAuth({ clientId: "confess-bot" })
+    authStrategy: new LocalAuth()
   });
 
 
