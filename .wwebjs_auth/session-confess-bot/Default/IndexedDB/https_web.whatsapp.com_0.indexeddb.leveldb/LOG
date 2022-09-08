@@ -1,0 +1,10 @@
+2022/09/08-20:19:07.345 2e8c Reusing MANIFEST D:\ADR\Personal\ADR\Self-Project\wa-bot\.wwebjs_auth\session-confess-bot\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2022/09/08-20:19:07.346 2e8c Recovering log #4
+2022/09/08-20:19:07.613 2e8c Reusing old log D:\ADR\Personal\ADR\Self-Project\wa-bot\.wwebjs_auth\session-confess-bot\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000004.log 
+2022/09/08-20:19:23.574 24c4 Level-0 table #8: started
+2022/09/08-20:19:23.686 24c4 Level-0 table #8: 1114324 bytes OK
+2022/09/08-20:19:23.741 24c4 Delete type=0 #4
+2022/09/08-20:19:23.798 1cc8 Compacting 1@1 + 1@2 files
+2022/09/08-20:19:24.015 1cc8 Generated table #9@1: 22206 keys, 1088937 bytes
+2022/09/08-20:19:24.015 1cc8 Compacted 1@1 + 1@2 files => 1088937 bytes
+2022/09/08-20:19:24.197 1cc8 compacted to: files[ 0 0 1 0 0 0 0 ]
