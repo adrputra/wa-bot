@@ -125,13 +125,15 @@ client.on('message', message => {
             chatLogHandler(`${message.from.split('@')[0]}_${sender}_${message.body}_${timeNow}`);
             client.sendMessage(phoneNumberFormatter(sender),replyTag+message.body);
             console.log('Replied!');
+            return;
         } else {
             setPhoneLogInactive(index);
             message.reply(unknownTag)
+            return;
         }
     } 
     if (!commandList.includes(message.body.split('#')[0])) {
-        client.sendMessage(message.from, unknownTag)
+      message.reply(unknownTag)
     }
 });
 
