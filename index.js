@@ -73,6 +73,7 @@ var helpMessage = '*!ping*\nCheck Bot Status\n\n*!confess*\n_!confess#phone_numb
 var sentTag = '[BOT] _Your confession is sent._';
 var replyTag = '[BOT] _Reply from someone._\n\n';
 var guideTag = '[BOT] _Someone is confessing to you. You have 5 minutes to reply._';
+var unknownTag = '[BOT] _Command unknown. Type *!help* to view command list._'
     
 client.on('message', message => {
 	if(message.body === '!ping') {
@@ -102,7 +103,7 @@ client.on('message', message => {
             updatePhoneLog();
             console.log('Phone Log Updated!');
         } else {
-            console.log('Not Registered Number!')
+            message.reply('Number is not registered!')
         }
     }
     if (receiver.includes(String(message.from.split('@')[0]))) {
@@ -126,11 +127,11 @@ client.on('message', message => {
             console.log('Replied!');
         } else {
             setPhoneLogInactive(index);
-            message.reply(helpMessage)
+            message.reply(unknownTag)
         }
     } 
     if (!commandList.includes(message.body.split('#')[0])) {
-        client.sendMessage(message.from, helpMessage)
+        client.sendMessage(message.from, unknownTag)
     }
 });
 
