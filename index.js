@@ -1,8 +1,10 @@
-const { Client, LocalAuth } = require('whatsapp-web.js');
+const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode');
 const { phoneNumberFormatter } = require('./formatter');
 const { chatLogHandler } = require('./chatLog');
 const { phoneLogHandler, getIndexes, getActivePhoneLog, setPhoneLogInactive, preventDoubleActivePhoneLog } = require('./Handler')
+const { removeBG, writeOutput } = require('./remove-bg');
+const mime = require('mime-types');
 const fs = require('fs');
 const express = require('express');
 const socketIO = require('socket.io');
@@ -68,14 +70,14 @@ const checkRegisteredNumber = function(number) {
     return isRegistered;
   }
 
-const commandList = ['!ping', '!help', '!confess', '!credit'];
-var helpMessage = '*!ping*\nCheck Bot Status\n\n*!confess*\n_!confess#phone_number#message_\n\nUntuk mengirimkan pesan secara anonymous dan memberikan waktu bagi penerima selama 5 menit untuk membalas pesan pengirim melalui Bot.\n\n*!credit*\nTampilkan credit.';
+const commandList = ['!ping', '!help', '!confess', '!credit', '!edit'];
+var helpMessage = '*!ping*\nCheck Bot Status\n\n*!confess*\n_!confess#phone_number#message_\n\nUntuk mengirimkan pesan secara anonymous dan memberikan waktu bagi penerima selama 5 menit untuk membalas pesan pengirim melalui Bot.\n\n*!edit*\n!edit_red (red = BG Color)\n!edit_#fc0303 (#fc0303 = Code Hex Colour)\n\nFitur Remove Background foto. Command dikirimkan sebagai *caption* dari media foto.\n\n*!credit*\nTampilkan credit.';
 var sentTag = '[BOT] _Your confession is sent._';
 var replyTag = '[BOT] _Reply from someone._\n\n';
 var guideTag = '[BOT] _Someone is confessing to you. You have 5 minutes to reply._';
 var unknownTag = '[BOT] _Command unknown. Type *!help* to view command list._'
     
-client.on('message', message => {
+client.on('message', async message => {
 	if(message.body === '!ping') {
 		message.reply('_[Bot is Online]_ \nType *!help* to view command list.');
 	}
@@ -84,6 +86,33 @@ client.on('message', message => {
     }
     if (message.body === '!credit') {
         message.reply('This Bot is created by _*Adrputra*_. Still in development progress.')
+    }
+    if (message.body.split('_')[0] === '!edit' && message.hasMedia) {
+        const media = await message.downloadMedia();
+        console.log('Replying..');
+        message.reply(`Please wait your photo is being edited ...`);
+
+        const filename = message.from.split('@')[0] + '_' + Date.now();
+        const extension = mime.extension(media.mimetype);
+        const fullFilename = './pict/' + filename + '.' + extension;
+
+        try {
+          fs.writeFileSync(fullFilename, media.data, { encoding: 'base64' }); 
+          console.log('File downloaded successfully!', fullFilename);
+        } catch (err) {
+          console.log('Failed to save the file:', err);
+        }
+
+        const outputFile = removeBG(filename, message.body.split('_')[1], extension)
+        const attachment = await writeOutput(outputFile)
+        // await console.log(attachment);
+
+        // const attachment = fs.readFileSync(outputFile, { encoding: 'base64' })
+        const editedMedia = await new MessageMedia(media.mimetype, attachment, 'EditedPhotoBG');
+        // await console.log(editedMedia);
+        chatLogHandler(`${message.from}_Change Photo Background to ${message.body.split('_')[1]}_${timeNow}`);
+        await client.sendMessage(message.from, editedMedia, {caption: 'This is your edited photo.'})
+        return
     }
     if (message.body.split('#')[0] === '!confess') {
         const phoneNumber = phoneNumberFormatter(message.body.split('#')[1])
@@ -132,7 +161,7 @@ client.on('message', message => {
             return;
         }
     } 
-    if (!commandList.includes(message.body.split('#')[0])) {
+    if (!commandList.includes(message.body.split('#')[0]) || message.body.split('')[0] === '!edit') {
       message.reply(unknownTag)
     }
 });
