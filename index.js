@@ -9,6 +9,7 @@ const fs = require('fs');
 const express = require('express');
 const socketIO = require('socket.io');
 const http = require('http');
+const webp = require('webp-converter')
 
 
 const port = process.env.PORT || 8000;
@@ -87,7 +88,8 @@ client.on('message', async message => {
     if (message.body === '!credit') {
         message.reply('This Bot is created by _*Adrputra*_. Still in development progress.')
     }
-    if (message.body.split('_')[0] === '!edit' && message.hasMedia) {
+    if (message.hasMedia) {
+      if (message.body.split('_')[0] === '!edit') {
         const media = await message.downloadMedia();
         console.log('Replying..');
         message.reply(`Please wait your photo is being edited ...`);
@@ -113,6 +115,17 @@ client.on('message', async message => {
         chatLogHandler(`${message.from}_Change Photo Background to ${message.body.split('_')[1]}_${timeNow}`);
         await client.sendMessage(message.from, editedMedia, {caption: 'This is your edited photo.'})
         return
+      }
+      if (message.body.split('_')[0] === '!sticker') {
+        const media = await message.downloadMedia();
+        console.log(media.data);
+        let result = webp.str2webpstr(media.data,"webp","-q 80");
+        console.log(result);
+        return
+      }
+      else {
+        message.reply('This current version bot is unable to handle media!')
+      }
     }
     if (message.body.split('#')[0] === '!confess') {
         const phoneNumber = phoneNumberFormatter(message.body.split('#')[1])
