@@ -1,5 +1,6 @@
 const { Client } = require("whatsapp-web.js");
-const fs = require('fs')
+const fs = require('fs');
+const webp = require('webp-converter');
 
 
 const phoneLogHandler = (log) => {
@@ -62,4 +63,20 @@ const preventDoubleActivePhoneLog = (receiver) => {
     })
 };
 
-module.exports = { phoneLogHandler, getIndexes, getActivePhoneLog, setPhoneLogInactive, preventDoubleActivePhoneLog }
+const convertSticker = (data) => {
+    async function init() {
+        let result = await webp.str2webpstr(data,"webp","-q 80");
+        await sleep(2000)
+        return result
+      }
+      
+      function sleep(ms) {
+        return new Promise((resolve) => {
+          setTimeout(resolve, ms);
+        });
+      }
+      const result = init();
+      return result
+}
+
+module.exports = { phoneLogHandler, getIndexes, getActivePhoneLog, setPhoneLogInactive, preventDoubleActivePhoneLog, convertSticker }

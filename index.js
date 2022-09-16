@@ -2,15 +2,13 @@ const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode');
 const { phoneNumberFormatter } = require('./formatter');
 const { chatLogHandler } = require('./chatLog');
-const { phoneLogHandler, getIndexes, getActivePhoneLog, setPhoneLogInactive, preventDoubleActivePhoneLog } = require('./Handler')
+const { phoneLogHandler, getIndexes, getActivePhoneLog, setPhoneLogInactive, preventDoubleActivePhoneLog, convertSticker } = require('./Handler')
 const { removeBG, writeOutput } = require('./remove-bg');
 const mime = require('mime-types');
 const fs = require('fs');
 const express = require('express');
 const socketIO = require('socket.io');
 const http = require('http');
-const webp = require('webp-converter')
-
 
 const port = process.env.PORT || 8000;
 
@@ -118,13 +116,16 @@ client.on('message', async message => {
       }
       if (message.body.split('_')[0] === '!sticker') {
         const media = await message.downloadMedia();
-        console.log(media.data);
-        let result = webp.str2webpstr(media.data,"webp","-q 80");
-        console.log(result);
+        // console.log(media.data);
+        // const result = await convertSticker(media.data)
+        // console.log(result);
+        // const stickerMedia = await new MessageMedia('image/webp', media.data, 'sticker.webp' );
+        await client.sendMessage(message.from, media, {sendMediaAsSticker: true});
         return
       }
       else {
         message.reply('This current version bot is unable to handle media!')
+        return
       }
     }
     if (message.body.split('#')[0] === '!confess') {
@@ -176,6 +177,7 @@ client.on('message', async message => {
     } 
     if (!commandList.includes(message.body.split('#')[0]) || message.body.split('')[0] === '!edit') {
       message.reply(unknownTag)
+      return
     }
 });
 
