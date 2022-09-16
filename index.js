@@ -2,7 +2,7 @@ const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode');
 const { phoneNumberFormatter } = require('./formatter');
 const { chatLogHandler } = require('./chatLog');
-const { phoneLogHandler, getIndexes, getActivePhoneLog, setPhoneLogInactive, preventDoubleActivePhoneLog, convertSticker } = require('./Handler')
+const { phoneLogHandler, getIndexes, getActivePhoneLog, setPhoneLogInactive, preventDoubleActivePhoneLog } = require('./Handler')
 const { removeBG, writeOutput } = require('./remove-bg');
 const mime = require('mime-types');
 const fs = require('fs');
@@ -60,8 +60,6 @@ const updatePhoneLog = () => {
     });
     receiver.pop();
     phoneLogList.pop();
-    console.log('Receiver Log: ',receiver);
-    console.log('Phone List Log: ',phoneLogList);
 };
 
 const checkRegisteredNumber = function(number) {
@@ -70,7 +68,7 @@ const checkRegisteredNumber = function(number) {
   }
 
 const commandList = ['!ping', '!help', '!confess', '!credit', '!edit'];
-var helpMessage = '*!ping*\nCheck Bot Status\n\n*!confess*\n_!confess#phone_number#message_\n\nUntuk mengirimkan pesan secara anonymous dan memberikan waktu bagi penerima selama 5 menit untuk membalas pesan pengirim melalui Bot.\n\n*!edit*\n!edit_red (red = BG Color)\n!edit_#fc0303 (#fc0303 = Code Hex Colour)\n\nFitur Remove Background foto. Command dikirimkan sebagai *caption* dari media foto.\n\n*!credit*\nTampilkan credit.';
+var helpMessage = '*!ping*\nCheck Bot Status\n\n*!confess*\n_!confess#phone_number#message_\n\nUntuk mengirimkan pesan secara anonymous dan memberikan waktu bagi penerima selama 5 menit untuk membalas pesan pengirim melalui Bot.\n\n*!edit*\n!edit_red (red = BG Color)\n!edit_#fc0303 (#fc0303 = Code Hex Colour)\n\nFitur Remove Background foto. Command dikirimkan sebagai *caption* dari media foto.\n\n*!sticker*\nMengubah foto menjadi sticker. Command dikirimkan sebagai caption dari media foto.\n\n*!credit*\nTampilkan credit.';
 var sentTag = '[BOT] _Your confession is sent._';
 var replyTag = '[BOT] _Reply from someone._\n\n';
 var guideTag = '[BOT] _Someone is confessing to you. You have 5 minutes to reply._';
@@ -89,7 +87,6 @@ client.on('message', async message => {
     if (message.hasMedia) {
       if (message.body.split('_')[0] === '!edit') {
         const media = await message.downloadMedia();
-        console.log('Replying..');
         message.reply(`Please wait your photo is being edited ...`);
 
         const filename = message.from.split('@')[0] + '_' + Date.now();
@@ -105,21 +102,14 @@ client.on('message', async message => {
 
         const outputFile = removeBG(filename, message.body.split('_')[1], extension)
         const attachment = await writeOutput(outputFile)
-        // await console.log(attachment);
 
-        // const attachment = fs.readFileSync(outputFile, { encoding: 'base64' })
         const editedMedia = await new MessageMedia(media.mimetype, attachment, 'EditedPhotoBG');
-        // await console.log(editedMedia);
         chatLogHandler(`${message.from}_Change Photo Background to ${message.body.split('_')[1]}_${timeNow}`);
         await client.sendMessage(message.from, editedMedia, {caption: 'This is your edited photo.'})
         return
       }
       if (message.body.split('_')[0] === '!sticker') {
         const media = await message.downloadMedia();
-        // console.log(media.data);
-        // const result = await convertSticker(media.data)
-        // console.log(result);
-        // const stickerMedia = await new MessageMedia('image/webp', media.data, 'sticker.webp' );
         await client.sendMessage(message.from, media, {sendMediaAsSticker: true});
         return
       }
@@ -133,18 +123,14 @@ client.on('message', async message => {
         preventDoubleActivePhoneLog(phoneNumber.split('@')[0])
         const isRegisteredNumber = checkRegisteredNumber(phoneNumber);
         if (isRegisteredNumber) {
-            console.log('Sending Message ...');
             client.sendMessage(phoneNumber, message.body.split('#')[2])
             client.sendMessage(phoneNumber, guideTag)
             client.sendMessage(message.from, sentTag)
-            console.log('Message Sent!');
             var timeNow = new Date();
             var timeLimit = new Date(timeNow.getTime() + 5*60000);
-            console.log('Updating Log ...');
             phoneLogHandler(`${phoneNumber}_${phoneNumberFormatter(message.from)}_${timeLimit.getTime()}_Y`);
             chatLogHandler(`${phoneNumber}_${phoneNumberFormatter(message.from)}_${message.body}_${timeNow}`);
             updatePhoneLog();
-            console.log('Phone Log Updated!');
         } else {
             message.reply('Number is not registered!')
         }
@@ -152,22 +138,14 @@ client.on('message', async message => {
     if (receiver.includes(String(message.from.split('@')[0]))) {
         const index = getIndexes(receiver, message.from.split('@')[0])
         const activePhoneLog = getActivePhoneLog(phoneLogList, index)
-        console.log('Receiver Log : ',receiver);
-        console.log(message.from.split('@')[0],' sending a message ...');
         // const index = receiver.indexOf(String(message.from.split('@')[0]));
-        console.log(index);
-        console.log(activePhoneLog);
         const sender = activePhoneLog.split('_')[1];
-        console.log(sender);
         const timestamp = activePhoneLog.split('_')[2];
-        console.log(timestamp);
-        console.log(Date.now());
         if (Date.now() < timestamp) {
             console.log('Receiver is replying ...');
             var timeNow = new Date();
             chatLogHandler(`${message.from.split('@')[0]}_${sender}_${message.body}_${timeNow}`);
             client.sendMessage(phoneNumberFormatter(sender),replyTag+message.body);
-            console.log('Replied!');
             return;
         } else {
             setPhoneLogInactive(index);

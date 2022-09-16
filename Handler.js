@@ -1,7 +1,10 @@
 const { Client } = require("whatsapp-web.js");
+<<<<<<< HEAD
 const fs = require('fs');
-const webp = require('webp-converter');
+=======
+const fs = require('fs')
 
+>>>>>>> parent of cc0bd5f (Fixed Sticker)
 
 const phoneLogHandler = (log) => {
     const receiver = log.split('_')[0]
@@ -63,20 +66,4 @@ const preventDoubleActivePhoneLog = (receiver) => {
     })
 };
 
-const convertSticker = (data) => {
-    async function init() {
-        let result = await webp.str2webpstr(data,"webp","-q 80");
-        await sleep(2000)
-        return result
-      }
-      
-      function sleep(ms) {
-        return new Promise((resolve) => {
-          setTimeout(resolve, ms);
-        });
-      }
-      const result = init();
-      return result
-}
-
-module.exports = { phoneLogHandler, getIndexes, getActivePhoneLog, setPhoneLogInactive, preventDoubleActivePhoneLog, convertSticker }
+module.exports = { phoneLogHandler, getIndexes, getActivePhoneLog, setPhoneLogInactive, preventDoubleActivePhoneLog }
