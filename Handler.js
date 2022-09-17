@@ -1,10 +1,5 @@
 const { Client } = require("whatsapp-web.js");
-<<<<<<< HEAD
 const fs = require('fs');
-=======
-const fs = require('fs')
-
->>>>>>> parent of cc0bd5f (Fixed Sticker)
 
 const phoneLogHandler = (log) => {
     const receiver = log.split('_')[0]
