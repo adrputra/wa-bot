@@ -127,7 +127,7 @@ client.on('message', async message => {
             client.sendMessage(phoneNumber, guideTag)
             client.sendMessage(message.from, sentTag)
             var timeNow = new Date();
-            var timeLimit = new Date(timeNow.getTime() + 5*60000);
+            var timeLimit = new Date(timeNow.getTime() + 30*60000);
             phoneLogHandler(`${phoneNumber}_${phoneNumberFormatter(message.from)}_${timeLimit.getTime()}_Y`);
             chatLogHandler(`${phoneNumber}_${phoneNumberFormatter(message.from)}_${message.body}_${timeNow}`);
             updatePhoneLog();
